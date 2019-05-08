@@ -46,7 +46,7 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
     let topBorderHeight: CGFloat      = 5
     let bottomBorderHeight: CGFloat   = 5
 
-    let indicatorWidth: CGFloat = 20.0
+    let indicatorWidth: CGFloat = 10.0
 
     public var minSpace: Float = 1              // In Seconds
     public var maxSpace: Float = 0              // In Seconds
@@ -85,7 +85,7 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
 
         startIndicator = ABStartIndicator(frame: CGRect(x: 0,
                                                         y: -topBorderHeight,
-                                                        width: 20,
+                                                        width: indicatorWidth,
                                                         height: self.frame.size.height + bottomBorderHeight + topBorderHeight))
         startIndicator.layer.anchorPoint = CGPoint(x: 1, y: 0.5)
         startIndicator.addGestureRecognizer(startDrag)
@@ -130,9 +130,9 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
                                                   action: #selector(progressDragged(recognizer:)))
 
         progressIndicator = ABProgressIndicator(frame: CGRect(x: 0,
-                                                              y: -topBorderHeight,
-                                                              width: 10,
-                                                              height: self.frame.size.height + bottomBorderHeight + topBorderHeight))
+                                                              y: -topBorderHeight + 5,
+                                                              width: 8,
+                                                              height: self.frame.size.height + bottomBorderHeight + topBorderHeight - 10))
         progressIndicator.addGestureRecognizer(progressDrag)
         self.addSubview(progressIndicator)
 
@@ -148,13 +148,13 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
 
         // Setup time labels
 
-        startTimeView = ABTimeView(size: CGSize(width: 60, height: 30), position: 1)
-        startTimeView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        self.addSubview(startTimeView)
-
-        endTimeView = ABTimeView(size: CGSize(width: 60, height: 30), position: 1)
-        endTimeView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        self.addSubview(endTimeView)
+//        startTimeView = ABTimeView(size: CGSize(width: 60, height: 30), position: 1)
+//        startTimeView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+//        self.addSubview(startTimeView)
+//
+//        endTimeView = ABTimeView(size: CGSize(width: 60, height: 30), position: 1)
+//        endTimeView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+//        self.addSubview(endTimeView)
     }
 
     public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -186,7 +186,6 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
             } else {
                 self.progressPercentage = self.valueFromSeconds(seconds: Float(seconds))
             }
-
             layoutSubviews()
         }
     }
@@ -212,10 +211,8 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
     public func setTimeViewPosition(position: ABTimeViewPosition){
         switch position {
         case .top:
-
             break
         case .bottom:
-
             break
         }
     }
@@ -557,14 +554,18 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
 
 
     private func secondsToFormattedString(totalSeconds: Float64) -> String{
-        let hours:Int = Int(totalSeconds.truncatingRemainder(dividingBy: 86400) / 3600)
-        let minutes:Int = Int(totalSeconds.truncatingRemainder(dividingBy: 3600) / 60)
-        let seconds:Int = Int(totalSeconds.truncatingRemainder(dividingBy: 60))
-
-        if hours > 0 {
-            return String(format: "%i:%02i:%02i", hours, minutes, seconds)
+        if !totalSeconds.isNaN {
+            let hours:Int = Int(totalSeconds.truncatingRemainder(dividingBy: 86400) / 3600)
+            let minutes:Int = Int(totalSeconds.truncatingRemainder(dividingBy: 3600) / 60)
+            let seconds:Int = Int(totalSeconds.truncatingRemainder(dividingBy: 60))
+            
+            if hours > 0 {
+                return String(format: "%i:%02i:%02i", hours, minutes, seconds)
+            } else {
+                return String(format: "%02i:%02i", minutes, seconds)
+            }
         } else {
-            return String(format: "%02i:%02i", minutes, seconds)
+            return ""
         }
     }
 

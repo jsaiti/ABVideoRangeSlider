@@ -46,15 +46,15 @@ open class ABTimeView: UIView {
         
         // Add Background View
         self.backgroundView.frame = self.bounds
-        self.backgroundView.backgroundColor = UIColor.yellow
+//        self.backgroundView.backgroundColor = UIColor.yellow
         self.addSubview(self.backgroundView)
         
         // Add time label
         self.timeLabel = UILabel()
         self.timeLabel.textAlignment = .center
-        self.timeLabel.textColor = UIColor.lightGray
+        self.timeLabel.textColor = UIColor.white
+        self.timeLabel.font = self.timeLabel.font.withSize(10)
         self.addSubview(self.timeLabel)
-
     }
     
     open override func layoutSubviews() {
@@ -71,5 +71,4 @@ open class ABTimeView: UIView {
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 }

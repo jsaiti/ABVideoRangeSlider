@@ -36,7 +36,6 @@ class ABThumbnailsManager: NSObject {
                                          height: view.frame.size.height)
                 self.thumbnailViews.append(imageView)
                 
-                
                 view.addSubview(imageView)
                 UIView.animate(withDuration: 0.2, animations: {() -> Void in
                     imageView.alpha = 1.0
@@ -48,22 +47,15 @@ class ABThumbnailsManager: NSObject {
     }
     
     private func thumbnailCount(inView: UIView) -> Int {
-		
 		var num : Double = 0;
-		
 		DispatchQueue.main.sync {
         	num = Double(inView.frame.size.width) / Double(inView.frame.size.height)
 		}
-
         return Int(ceil(num))
     }
     
     func updateThumbnails(view: UIView, videoURL: URL, duration: Float64) -> [UIImageView]{
 
-        var thumbnails = [UIImage]()
-        var offset: Float64 = 0
-
-        
         for view in self.thumbnailViews{
             DispatchQueue.main.sync
             {
@@ -71,6 +63,8 @@ class ABThumbnailsManager: NSObject {
             }
         }
         
+        var thumbnails = [UIImage]()
+        var offset: Float64 = 0
         let imagesCount = self.thumbnailCount(inView: view)
         
         for i in 0..<imagesCount{
